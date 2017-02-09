@@ -1,2 +1,2 @@
-# Projet-de-d-partement
+# Projet-de-département
 Yield Management et Programmation stochastique
