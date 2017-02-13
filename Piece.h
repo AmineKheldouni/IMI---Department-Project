@@ -7,10 +7,10 @@
 
 class Piece
 {
-    const static double pente0 = 0.1;
-    const static double pente1 = 1;
-    const static double seuil = 3;
-    const static double probaP0 = 0.9;
+    const double pente0 = 0.1;
+    const double pente1 = 1;
+    const double seuil = 3;
+    const double probaP0 = 0.9;
     double frequence;
     bool whichPente;
 public :
