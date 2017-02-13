@@ -1,7 +1,3 @@
-//
-// Created by amine on 13/02/17.
-//
-
 #ifndef PROJECT_LOCATION_H
 #define PROJECT_LOCATION_H
 
