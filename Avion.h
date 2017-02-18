@@ -10,7 +10,7 @@ using namespace std;
 
 class Avion {
     const int Panne = 1000000;
-    const int T = 12;
+    const int T = 10;
     Location location;
     Piece piece;
     int temps;
@@ -20,7 +20,7 @@ public:
     // On retourne dans l'ordre la probabilité d'obtenir l'avion, l'avion, et le coût associé
     vector<tuple<double, Avion, double>> nextAvionsPossibles(bool action) const;
 
-    pair<double, bool> trouveValeur(map<Avion, int> &valeurs) const;
+    pair<double, bool> trouveValeur(map<Avion, pair<int,double>> &valeurs_actions) const;
 
     bool operator<(const Avion avion) const {
         return (temps < avion.temps || (temps == avion.temps && piece < avion.piece) ||

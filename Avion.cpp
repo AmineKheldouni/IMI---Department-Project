@@ -24,17 +24,21 @@ vector<tuple<double, Avion, double>> Avion::nextAvionsPossibles(bool action) con
 }
 
 
-pair<double, bool> Avion::trouveValeur(map<Avion,int> &valeurs) const {
+
+// dans le vecteur actions, on retient à l'indice t le choix à faire à la date t permettant d'atteindre le cout minimum renvoyé par la fonction
+pair<double, bool> Avion::trouveValeur(map<Avion,pair<int,double>> &valeurs_actions) const {
     if (temps == T) {
         // Que mettre en valeur de retour dans ce cas ?
         return pair<double, bool>(0, false);
     }
     else {
         double meilleureValeur = 0;
-        map<Avion,int>::iterator it;
-        it = valeurs.find(*this);
-        if (it != valeurs.end()) {
-             meilleureValeur = (*it).second;
+        int action = false;
+        map<Avion, pair<int,double>>::iterator it;
+        it = valeurs_actions.find(*this);
+        if (it != valeurs_actions.end()) {
+             meilleureValeur = ((*it).second).second;
+             action = ((*it).second).first;
         }
         else {
             double valeurAvecChangementPiece = 0;
@@ -43,19 +47,19 @@ pair<double, bool> Avion::trouveValeur(map<Avion,int> &valeurs) const {
             vector<tuple<double, Avion, double>> avionsAvecProba1 = nextAvionsPossibles(true);
             for (int i = 0; i < avionsAvecProba1.size(); i ++) {
                 valeurAvecChangementPiece += get<0>(avionsAvecProba1[i]) *
-                        (get<1>(avionsAvecProba1[i]).trouveValeur(valeurs).first + get<2>(avionsAvecProba1[i]));
+                        (get<1>(avionsAvecProba1[i]).trouveValeur(valeurs_actions).first + get<2>(avionsAvecProba1[i]));
             }
 
             // Cas où l'on ne change pas la pièce
             vector<tuple<double, Avion, double>> avionsAvecProba2 = nextAvionsPossibles(false);
             for (int i = 0; i < avionsAvecProba2.size(); i ++) {
                 valeurSansChangementPiece += get<0>(avionsAvecProba2[i]) *
-                        (get<1>(avionsAvecProba2[i]).trouveValeur(valeurs).first + get<2>(avionsAvecProba2[i]));
+                        (get<1>(avionsAvecProba2[i]).trouveValeur(valeurs_actions).first + get<2>(avionsAvecProba2[i]));
             }
             meilleureValeur = min(valeurAvecChangementPiece, valeurSansChangementPiece);
-            valeurs.insert(pair<Avion,int>(*this,meilleureValeur));
+            action = (min(valeurAvecChangementPiece, valeurSansChangementPiece) == valeurAvecChangementPiece);
+            valeurs_actions.insert(pair<Avion,pair<int,double>>(*this,pair<int,double> (action, meilleureValeur)));
         }
-        return pair<double, bool>(meilleureValeur, true);
+        return pair<double, bool>(meilleureValeur, action);
     }
 }
-
