@@ -23,32 +23,39 @@ vector<tuple<double, Avion, double>> Avion::nextAvionsPossibles(bool action) con
     return avionsAvecProba;
 }
 
-pair<double, bool> Avion::trouveValeur() const {
+
+pair<double, bool> Avion::trouveValeur(map<Avion,int> &valeurs) const {
     if (temps == T) {
         // Que mettre en valeur de retour dans ce cas ?
         return pair<double, bool>(0, false);
     }
     else {
-        double valeurAvecChangementPiece = 0;
-        double valeurSansChangementPiece = 0;
-
-        // DUPLICATION DE CODE,C'EST MOCHE
-        // Cas du changement de la pièce
-        vector<tuple<double, Avion, double>> avionsAvecProba1 = nextAvionsPossibles(true);
-        for (int i = 0; i < avionsAvecProba1.size(); i ++) {
-            valeurAvecChangementPiece += get<0>(avionsAvecProba1[i]) *
-                    (get<1>(avionsAvecProba1[i]).trouveValeur().first + get<2>(avionsAvecProba1[i]));
+        double meilleureValeur = 0;
+        map<Avion,int>::iterator it;
+        it = valeurs.find(*this);
+        if (it != valeurs.end()) {
+             meilleureValeur = (*it).second;
         }
+        else {
+            double valeurAvecChangementPiece = 0;
+            double valeurSansChangementPiece = 0;
+            // Cas du changement de la pièce
+            vector<tuple<double, Avion, double>> avionsAvecProba1 = nextAvionsPossibles(true);
+            for (int i = 0; i < avionsAvecProba1.size(); i ++) {
+                valeurAvecChangementPiece += get<0>(avionsAvecProba1[i]) *
+                        (get<1>(avionsAvecProba1[i]).trouveValeur(valeurs).first + get<2>(avionsAvecProba1[i]));
+            }
 
-        // Cas où l'on ne change pas la pièce
-        vector<tuple<double, Avion, double>> avionsAvecProba2 = nextAvionsPossibles(false);
-        for (int i = 0; i < avionsAvecProba2.size(); i ++) {
-            valeurSansChangementPiece += get<0>(avionsAvecProba2[i]) *
-                    (get<1>(avionsAvecProba2[i]).trouveValeur().first + get<2>(avionsAvecProba2[i]));
+            // Cas où l'on ne change pas la pièce
+            vector<tuple<double, Avion, double>> avionsAvecProba2 = nextAvionsPossibles(false);
+            for (int i = 0; i < avionsAvecProba2.size(); i ++) {
+                valeurSansChangementPiece += get<0>(avionsAvecProba2[i]) *
+                        (get<1>(avionsAvecProba2[i]).trouveValeur(valeurs).first + get<2>(avionsAvecProba2[i]));
+            }
+            meilleureValeur = min(valeurAvecChangementPiece, valeurSansChangementPiece);
+            valeurs.insert(pair<Avion,int>(*this,meilleureValeur));
         }
-
-        return pair<double, bool>(min(valeurAvecChangementPiece, valeurSansChangementPiece),
-                (min(valeurAvecChangementPiece, valeurSansChangementPiece) == valeurAvecChangementPiece));
+        return pair<double, bool>(meilleureValeur, true);
     }
 }
 
