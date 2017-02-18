@@ -6,4 +6,6 @@ enum class Location : int {
     NOHUB = 100000
 };
 
+Location otherLocation(Location location);
+
 #endif //PROJECT_LOCATION_H
