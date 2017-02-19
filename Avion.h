@@ -20,7 +20,7 @@ public:
     // On retourne dans l'ordre la probabilité d'obtenir l'avion, l'avion, et le coût associé
     vector<tuple<double, Avion, double>> nextAvionsPossibles(bool action) const;
 
-    pair<double, bool> trouveValeur(map<Avion, pair<int,double>> &valeurs_actions) const;
+    pair<double, bool> trouveValeur(map<Avion, pair<bool,double>> &valeurs_actions) const;
 
     bool operator<(const Avion avion) const {
         return (temps < avion.temps || (temps == avion.temps && piece < avion.piece) ||

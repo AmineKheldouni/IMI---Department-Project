@@ -26,15 +26,15 @@ vector<tuple<double, Avion, double>> Avion::nextAvionsPossibles(bool action) con
 
 
 // dans le vecteur actions, on retient à l'indice t le choix à faire à la date t permettant d'atteindre le cout minimum renvoyé par la fonction
-pair<double, bool> Avion::trouveValeur(map<Avion,pair<int,double>> &valeurs_actions) const {
+pair<double, bool> Avion::trouveValeur(map<Avion,pair<bool, double>> &valeurs_actions) const {
     if (temps == T) {
         // Que mettre en valeur de retour dans ce cas ?
         return pair<double, bool>(0, false);
     }
     else {
-        double meilleureValeur = 0;
-        int action = false;
-        map<Avion, pair<int,double>>::iterator it;
+        double meilleureValeur;
+        bool action;
+        map<Avion, pair<bool, double>>::iterator it;
         it = valeurs_actions.find(*this);
         if (it != valeurs_actions.end()) {
              meilleureValeur = ((*it).second).second;
@@ -58,7 +58,7 @@ pair<double, bool> Avion::trouveValeur(map<Avion,pair<int,double>> &valeurs_acti
             }
             meilleureValeur = min(valeurAvecChangementPiece, valeurSansChangementPiece);
             action = (min(valeurAvecChangementPiece, valeurSansChangementPiece) == valeurAvecChangementPiece);
-            valeurs_actions.insert(pair<Avion,pair<int,double>>(*this,pair<int,double> (action, meilleureValeur)));
+            valeurs_actions.insert(pair<Avion,pair<bool, double>>(*this,pair<int,double> (action, meilleureValeur)));
         }
         return pair<double, bool>(meilleureValeur, action);
     }
