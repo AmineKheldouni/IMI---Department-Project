@@ -32,10 +32,10 @@ public :
     // On retourne la pièce et la probabilité de l'obtenir
     vector<pair<double,Piece>> nextPiecePossible(bool action) const;
 
-    bool operator<(const Piece piece) const {
+    bool operator<(const Piece &piece) const {
         return (frequence < piece.frequence || (frequence == piece.frequence && whichPente < piece.whichPente));
     }
-    bool operator==(const Piece piece) const {
+    bool operator==(const Piece &piece) const {
         return (frequence == piece.frequence && whichPente == piece.whichPente);
     }
 };

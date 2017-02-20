@@ -22,7 +22,7 @@ public:
 
     pair<double, bool> trouveValeur(map<Avion, pair<bool,double>> &valeurs_actions) const;
 
-    bool operator<(const Avion avion) const {
+    bool operator<(const Avion &avion) const {
         return (temps < avion.temps || (temps == avion.temps && piece < avion.piece) ||
                 (temps == avion.temps && piece == avion.piece && location < avion.location));
     }
