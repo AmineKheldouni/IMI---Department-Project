@@ -1,7 +1,7 @@
 #include "Avion.h"
 
-Avion::Avion(Location location, const Piece &piece, int temps) : location(location), piece(piece),
-                                                                              temps(temps) {}
+Avion::Avion(const vector<Location> &trajet, const Piece &piece, int temps, int position) : trajet(trajet), piece(piece),
+                                                                              temps(temps), position(position) {}
 
 
 vector<tuple<double, Avion, double>> Avion::nextAvionsPossibles(bool action) const {
@@ -12,12 +12,12 @@ vector<tuple<double, Avion, double>> Avion::nextAvionsPossibles(bool action) con
         // Cas de la panne
         if (pieceAvecProba[i].second.depasseSeuil()) {
             avionsAvecProba.push_back(tuple<double, Avion, double>(pieceAvecProba[i].first,
-                                                         Avion(location, Piece(), temps + 1), Panne));
+                                                         Avion(trajet, Piece(), temps + 1, position), Panne));
         }
         else {
             avionsAvecProba.push_back(tuple<double, Avion, double>(pieceAvecProba[i].first,
-                                                         Avion(otherLocation(location), pieceAvecProba[i].second,
-                                                              temps + 1), (int) location * action));
+                                                         Avion(trajet, pieceAvecProba[i].second,
+                                                              temps + 1, position + 1), (int) nextLocation(trajet, position) * action));
         }
     }
     return avionsAvecProba;

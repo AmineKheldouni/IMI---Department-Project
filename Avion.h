@@ -11,11 +11,12 @@ using namespace std;
 class Avion {
     const int Panne = 1000000;
     const int T = 10;
-    Location location;
+    const vector<Location> trajet;
     Piece piece;
     int temps;
+    int position;
 public:
-    Avion(Location location, const Piece &piece, int temps);
+    Avion(const vector<Location> &trajet, const Piece &piece, int temps, int position);
 
     // On retourne dans l'ordre la probabilité d'obtenir l'avion, l'avion, et le coût associé
     vector<tuple<double, Avion, double>> nextAvionsPossibles(bool action) const;
@@ -24,7 +25,7 @@ public:
 
     bool operator<(const Avion &avion) const {
         return (temps < avion.temps || (temps == avion.temps && piece < avion.piece) ||
-                (temps == avion.temps && piece == avion.piece && location < avion.location));
+                (temps == avion.temps && piece == avion.piece && position < avion.position));
     }
 };
 
