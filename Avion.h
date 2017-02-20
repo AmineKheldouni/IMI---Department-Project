@@ -28,4 +28,6 @@ public:
     }
 };
 
+double esperanceValeur(const vector<tuple<double, Avion, double>> &avionsAvecProba, map<Avion,pair<bool, double>> &valeurs_actions);
+
 #endif //PROJET_AVION_H

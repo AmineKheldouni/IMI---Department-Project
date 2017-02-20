@@ -43,23 +43,28 @@ pair<double, bool> Avion::trouveValeur(map<Avion,pair<bool, double>> &valeurs_ac
         else {
             double valeurAvecChangementPiece = 0;
             double valeurSansChangementPiece = 0;
+
             // Cas du changement de la pièce
             vector<tuple<double, Avion, double>> avionsAvecProba1 = nextAvionsPossibles(true);
-            for (int i = 0; i < avionsAvecProba1.size(); i ++) {
-                valeurAvecChangementPiece += get<0>(avionsAvecProba1[i]) *
-                        (get<1>(avionsAvecProba1[i]).trouveValeur(valeurs_actions).first + get<2>(avionsAvecProba1[i]));
-            }
+            valeurAvecChangementPiece = esperanceValeur(avionsAvecProba1, valeurs_actions);
 
             // Cas où l'on ne change pas la pièce
             vector<tuple<double, Avion, double>> avionsAvecProba2 = nextAvionsPossibles(false);
-            for (int i = 0; i < avionsAvecProba2.size(); i ++) {
-                valeurSansChangementPiece += get<0>(avionsAvecProba2[i]) *
-                        (get<1>(avionsAvecProba2[i]).trouveValeur(valeurs_actions).first + get<2>(avionsAvecProba2[i]));
-            }
+            valeurSansChangementPiece = esperanceValeur(avionsAvecProba2, valeurs_actions);
+
             meilleureValeur = min(valeurAvecChangementPiece, valeurSansChangementPiece);
             action = (min(valeurAvecChangementPiece, valeurSansChangementPiece) == valeurAvecChangementPiece);
             valeurs_actions.insert(pair<Avion,pair<bool, double>>(*this,pair<int,double> (action, meilleureValeur)));
         }
         return pair<double, bool>(meilleureValeur, action);
     }
+}
+
+double esperanceValeur(const vector<tuple<double, Avion, double>> &avionsAvecProba, map<Avion,pair<bool, double>> &valeurs_actions) {
+    double valeur = 0;
+    for (int i = 0; i < avionsAvecProba.size(); i ++) {
+        valeur += get<0>(avionsAvecProba[i]) *
+                                     (get<1>(avionsAvecProba[i]).trouveValeur(valeurs_actions).first + get<2>(avionsAvecProba[i]));
+    }
+    return valeur;
 }
