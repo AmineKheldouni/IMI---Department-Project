@@ -8,10 +8,7 @@ Piece::Piece() {
     whichPente = false;
 }
 
-Piece::Piece(double frequence, bool whichPente) {
-    this->frequence = frequence;
-    this->whichPente = whichPente;
-}
+Piece::Piece(double frequence, bool whichPente) : frequence(frequence), whichPente(whichPente) {}
 
 bool Piece::depasseSeuil() const {
     return (frequence > seuil);
