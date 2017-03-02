@@ -5,6 +5,7 @@
 #include "PlanePart.h"
 #include <tuple>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -12,22 +13,24 @@ class Plane {
     const int breakdown = 1000000;
     const int T = 10;
     Location location;
-    PlanePart planePart;
+    vector<PlanePart> planeParts;
     int time;
 public:
-    Plane(Location location, const PlanePart &PlanePart, int time);
+    Plane(Location location, const vector<PlanePart> &planePart, int time);
 
-    // On retourne dans l'ordre la probabilité d'obtenir l'Plane, l'Plane, et le coût associé
-    vector<tuple<double, Plane, double>> nextPlanesPossible(bool action) const;
+    // On retourne dans l'ordre la probabilité d'obtenir l'avion, l'avion, et le coût associé
+    vector<tuple<double, Plane, double>> nextPlanesPossible(vector<bool> action) const;
 
-    pair<double, bool> findValue(map<Plane, pair<bool,double>> &valeurs_actions) const;
+    pair<double, vector<bool>> findValue(map<Plane, pair<vector<bool>,double>> &valeurs_actions) const;
 
-    bool operator<(const Plane &Plane) const {
-        return (time < Plane.time || (time == Plane.time && planePart < Plane.planePart) ||
-                (time == Plane.time && planePart == Plane.planePart && location < Plane.location));
+    bool operator<(const Plane &plane) const {
+        return (time < plane.time || (time == plane.time && planeParts < plane.planeParts) ||
+                (time == plane.time && planeParts == plane.planeParts && location < plane.location));
     }
 };
 
-double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<bool, double>> &valeurs_actions);
+double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions);
+
+vector<bool> genere(int i, int size);
 
 #endif //PROJET_Plane_H

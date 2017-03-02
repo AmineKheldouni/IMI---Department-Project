@@ -1,5 +1,4 @@
 #include "PlanePart.h"
-#include <iostream>
 
 using namespace std;
 
@@ -12,6 +11,11 @@ PlanePart::PlanePart(double frequency, bool whichPente) : frequency(frequency), 
 
 bool PlanePart::overBound() const {
     return (frequency > seuil);
+}
+
+void PlanePart::reinitialize() {
+    frequency = 0;
+    whichPente = false;
 }
 
 // Pas maintenable facilement car ~duplication de code
