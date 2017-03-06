@@ -31,6 +31,6 @@ public:
 
 double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions);
 
-vector<bool> genere(int i, int size);
+vector<bool> base10to2(int integer, int size);
 
 #endif //PROJET_Plane_H

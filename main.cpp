@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
     vector<PlanePart> planeParts;
-    for (int i = 0; i < 3; i ++) {
+    for (int i = 0; i < 1; i ++) {
         planeParts.push_back(PlanePart());
     }
     Plane plane(Location::HUB, planeParts, 0);

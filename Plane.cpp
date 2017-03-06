@@ -7,58 +7,58 @@ Plane::Plane(Location location, const vector<PlanePart> &planeParts, int time) :
 
 vector<tuple<double, Plane, double>> Plane::nextPlanesPossible(vector<bool> action) const {
     vector<tuple<double, Plane, double>> PlanesWithProba;
-    vector<vector<pair<double, PlanePart>>> planePartWithProba2;
+    vector<vector<pair<double, PlanePart>>> nextStatesForParts;
 
-    vector<int> compteur;
+    vector<int> multiplierOfPossibleStates;
     for (int i = 0; i < planeParts.size(); i ++) {
-        planePartWithProba2.push_back(planeParts[i].nextPlanePartPossible(action[i]));
-        compteur.push_back(planePartWithProba2[i].size());
+        nextStatesForParts.push_back(planeParts[i].nextPlanePartPossible(action[i]));
+        multiplierOfPossibleStates.push_back(nextStatesForParts[i].size());
     }
 
-    for (int i = compteur.size() - 2; i >= 0; i --) {
-        compteur[i] *= compteur[i + 1];
+    for (int i = multiplierOfPossibleStates.size() - 2; i >= 0; i --) {
+        multiplierOfPossibleStates[i] *= multiplierOfPossibleStates[i + 1];
     }
-    compteur.push_back(1);
+    multiplierOfPossibleStates.push_back(1);
 
     vector<pair<double, vector<PlanePart>>> planePartWithProba;
-    for (int i = 0; i < compteur[0]; i ++) {
+    for (int i = 0; i < multiplierOfPossibleStates[0]; i ++) {
         planePartWithProba.push_back(pair<double, vector<PlanePart>>(1,vector<PlanePart>()));
     }
 
 
     for (int i = 0; i < planeParts.size(); i ++) {
-        for (int j = 0; j < compteur[0] / compteur[i + 1]; j ++) {
-            for (int k = 0; k < compteur[i + 1]; k ++) {
-                planePartWithProba[j * compteur[i + 1] + k].first *= planePartWithProba2[i][j%(compteur[i]/compteur[i + 1])].first;
-                planePartWithProba[j * compteur[i + 1] + k].second.push_back(planePartWithProba2[i][j%(compteur[i]/compteur[i + 1])].second);
+        for (int j = 0; j < multiplierOfPossibleStates[0] / multiplierOfPossibleStates[i + 1]; j ++) {
+            for (int k = 0; k < multiplierOfPossibleStates[i + 1]; k ++) {
+                planePartWithProba[j * multiplierOfPossibleStates[i + 1] + k].first *= nextStatesForParts[i][j%(multiplierOfPossibleStates[i]/multiplierOfPossibleStates[i + 1])].first;
+                planePartWithProba[j * multiplierOfPossibleStates[i + 1] + k].second.push_back(nextStatesForParts[i][j%(multiplierOfPossibleStates[i]/multiplierOfPossibleStates[i + 1])].second);
             }
         }
     }
 
     for (int i = 0; i < planePartWithProba.size(); i ++) {
-        int coutTotal = 0;
-        bool panne = false;
+        int totalCost = 0;
+        bool breakDown = false;
         for (int j = 0; j < planePartWithProba[i].second.size(); j ++) {
-            // Cas de panne sur une pièce
+            // Cas de breakDown sur une pièce
             if (planePartWithProba[i].second[j].overBound()) {
                 planePartWithProba[i].second[j].reinitialize();
-                coutTotal += breakdown;
-                panne = true;
+                totalCost += breakdown;
+                breakDown = true;
             }
             else {
-                coutTotal += (int) location * action[j];
+                totalCost += (int) location * action[j];
             }
         }
 
         Location nextLocation = location;
         // Pas de Panne
-        if (!panne) {
+        if (!breakDown) {
             nextLocation = otherLocation(location);
         }
 
         PlanesWithProba.push_back(tuple<double, Plane, double>(planePartWithProba[i].first,
                                                     Plane(nextLocation, planePartWithProba[i].second, time + 1),
-                                                               coutTotal));
+                                                               totalCost));
     }
     return PlanesWithProba;
 }
@@ -82,12 +82,12 @@ pair<double, vector<bool>> Plane::findValue(map<Plane,pair<vector<bool>, double>
         }
         else {
 
-            action = genere(0, planeParts.size());
+            action = base10to2(0, planeParts.size());
             vector<tuple<double, Plane, double>> PlanesWithProba = nextPlanesPossible(action);
             bestValue = meanValue(PlanesWithProba, valeurs_actions);
 
             for (int i = 1; i < pow(2, planeParts.size()); i ++) {
-                vector<bool> actionPossible = genere(i, planeParts.size());
+                vector<bool> actionPossible = base10to2(i, planeParts.size());
                 PlanesWithProba = nextPlanesPossible(actionPossible);
                 double valeur = meanValue(PlanesWithProba, valeurs_actions);
 
@@ -113,16 +113,17 @@ double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, ma
     return valeur;
 }
 
-vector<bool> genere(int i, int size) {
+// Passe l'entier qui est en base 10 en base 2, en renvoyant un tableau de taille size
+vector<bool> base10to2(int integer, int size) {
 
-    vector<bool> retour;
-    while (i != 0) {
-        retour.push_back((bool) (i % 2));
-        i = (i - i % 2) / 2;
+    vector<bool> vector01;
+    while (integer != 0) {
+        vector01.push_back((bool) (integer % 2));
+        integer = (integer - integer % 2) / 2;
     }
 
-    while (retour.size() != size) {
-        retour.push_back(false);
+    while (vector01.size() != size) {
+        vector01.push_back(false);
     }
-    return retour;
+    return vector01;
 }
