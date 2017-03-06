@@ -18,9 +18,9 @@ class PlanePart
     const double seuil = 3;
     const double probaP0 = 0.9;
     bool whichPente;
+    double frequency;
 
 public :
-    double frequency;
     PlanePart();
 
     PlanePart(double frequency, bool whichPente);
