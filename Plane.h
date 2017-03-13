@@ -26,7 +26,7 @@ public:
 
     bool operator<(const Plane &plane) const {
         return (time < plane.time || (time == plane.time && planeParts < plane.planeParts) ||
-                (time == plane.time && planeParts == plane.planeParts && path < plane.path));
+                (time == plane.time && planeParts == plane.planeParts && place < plane.place));
     }
 };
 
