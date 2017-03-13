@@ -1,15 +1,18 @@
 #include "Plane.h"
 #include <iostream>
+#include <ostream>
 
 using namespace std;
 
 
 int main(){
     vector<PlanePart> planeParts;
-    for (int i = 0; i < 1; i ++) {
+    for (int i = 0; i < 2; i ++) {
         planeParts.push_back(PlanePart());
     }
-    Plane plane(Location::HUB, planeParts, 0);
+    //vector<Location> path = {Location::PARIS, Location::AMSTERDAM, Location::LONDRES, Location::PARIS, Location::NEWYORK};
+    vector<Location> path = {Location::PARIS, Location::LONDRES};
+    Plane plane(path, planeParts, 0, 0);
     map<Plane,pair<vector<bool>,double>> valeurs_actions;
     cout << plane.findValue(valeurs_actions).first << endl;
 

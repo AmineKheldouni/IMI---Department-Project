@@ -1,10 +1,12 @@
 #include "Location.h"
 
-Location otherLocation(Location location) {
-    if (location == Location::HUB) {
-        return Location ::NOHUB;
+
+Location nextLocation(const vector<Location> &vectorLocation, int position) {
+    position = position % vectorLocation.size();
+    if (position == vectorLocation.size() - 1) {
+        return vectorLocation[0];
     }
     else {
-        return Location ::HUB;
+        return vectorLocation[position + 1];
     }
 }

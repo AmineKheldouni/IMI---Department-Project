@@ -1,7 +1,7 @@
 #include "Plane.h"
 
-Plane::Plane(Location location, const vector<PlanePart> &planeParts, int time) : location(location),
-                                                                                 planeParts(planeParts), time(time) {}
+Plane::Plane(vector<Location> path, const vector<PlanePart> &planeParts, int time, int place) : path(path),
+                                                                                 planeParts(planeParts), time(time), place(place) {}
 
 
 
@@ -46,18 +46,18 @@ vector<tuple<double, Plane, double>> Plane::nextPlanesPossible(vector<bool> acti
                 breakDown = true;
             }
             else {
-                totalCost += (int) location * action[j];
+                totalCost += (int) path[place % path.size()] * action[j];
             }
         }
 
-        Location nextLocation = location;
+        int nextPlace = place;
         // Pas de Panne
         if (!breakDown) {
-            nextLocation = otherLocation(location);
+            nextPlace += 1;
         }
 
         PlanesWithProba.push_back(tuple<double, Plane, double>(planePartWithProba[i].first,
-                                                    Plane(nextLocation, planePartWithProba[i].second, time + 1),
+                                                    Plane(path, planePartWithProba[i].second, time + 1, nextPlace),
                                                                totalCost));
     }
     return PlanesWithProba;
