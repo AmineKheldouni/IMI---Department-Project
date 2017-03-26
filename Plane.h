@@ -11,18 +11,21 @@ using namespace std;
 
 class Plane {
     const int breakdown = 1000000;
-    const int T = 100;
+    const int planeCorrelation = 400000;
+    const int T = 10;
     vector<Location> path;
     vector<PlanePart> planeParts;
     int time;
     int place;
+    int id;
 public:
-    Plane(vector<Location> path, const vector<PlanePart> &planePart, int time, int place);
-
+    Plane(vector<Location> path, const vector<PlanePart> &planePart, int time, int place, int id);
+    int getId(){ return id;}
+    int getPlace(){ return place;}
     // On retourne dans l'ordre la probabilité d'obtenir l'avion, l'avion, et le coût associé
-    vector<tuple<double, Plane, double>> nextPlanesPossible(vector<bool> action) const;
+    vector<tuple<double, Plane, double>> nextPlanesPossible(vector<bool> action, vector<Plane> planes) const;
 
-    pair<double, vector<bool>> findValue(map<Plane, pair<vector<bool>,double>> &valeurs_actions) const;
+    pair<double, vector<bool>> findValue(map<Plane, pair<vector<bool>,double>> &valeurs_actions, vector<Plane> planes) const;
 
     bool operator<(const Plane &plane) const {
         return (time < plane.time || (time == plane.time && planeParts < plane.planeParts) ||
@@ -30,8 +33,8 @@ public:
     }
 };
 
-double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions);
+double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions, vector<Plane> planes);
 
 vector<bool> base10to2(int integer, int size);
-
+bool prod(vector<bool> action);
 #endif //PROJET_Plane_H
