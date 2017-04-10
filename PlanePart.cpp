@@ -13,11 +13,25 @@ bool PlanePart::overBound() const {
     return (frequency > seuil);
 }
 
+bool PlanePart::risque() const {
+	return (frequency >= seuil - 1);
+}
+
+bool PlanePart::risquemoins () const {
+	return (frequency >= seuil - 2);
+}
+bool PlanePart::risqueinter() const {
+	return (frequency >= seuil - 1.1);
+}
+
 void PlanePart::reinitialize() {
     frequency = 0;
     whichPente = false;
 }
 
+bool PlanePart::penteHausse() const {
+	return whichPente;
+}
 // Pas maintenable facilement car ~duplication de code
 // Mais à garder car peut être utile pour de meilleures performances
 /*
@@ -29,7 +43,7 @@ void PlanePart::next(bool action) {
         }
         else {
             double transition = (double) rand() / RAND_MAX;
-            if (transition > probaP0) {
+            if (transition > probaP1) {
                 frequency += pente1;
                 whichPente = true;
             }
@@ -76,19 +90,19 @@ vector<pair<double,PlanePart>> PlanePart::nextPlanePartPossible(bool action) con
         // Cas où l'on est sur la pente basse
         else {
             // On reste sur la pente basse...
-            PlanePartWithProba.push_back(pair<double,PlanePart>(probaP0, PlanePart(frequency + pente0, false)));
+            PlanePartWithProba.push_back(pair<double,PlanePart>(probaP1, PlanePart(frequency + pente0, false)));
             // ... ou on bascule sur la pente haute
-            PlanePartWithProba.push_back(pair<double,PlanePart>(1 - probaP0, PlanePart(frequency + pente1, true)));
+            PlanePartWithProba.push_back(pair<double,PlanePart>(1 - probaP1, PlanePart(frequency + pente1, true)));
         }
     }
 
-    // Cas où l'n change la pièce
+    // Cas où l'on change la pièce
     else {
         // La fréquence est remise à 0 mais un vol est tout de même effectué
         // On reste sur la pente basse...
-        PlanePartWithProba.push_back(pair<double,PlanePart>(probaP0, PlanePart(pente0, false)));
+        PlanePartWithProba.push_back(pair<double,PlanePart>(probaP1, PlanePart(pente0, false)));
         // ... ou on bascule sur la pente haute
-        PlanePartWithProba.push_back(pair<double,PlanePart>(1 - probaP0, PlanePart(pente1, true)));
+        PlanePartWithProba.push_back(pair<double,PlanePart>(1 - probaP1, PlanePart(pente1, true)));
     }
 
     return PlanePartWithProba;

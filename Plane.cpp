@@ -8,8 +8,8 @@ Plane::Plane(vector<Location> path, const vector<PlanePart> &planeParts, int tim
 vector<tuple<double, Plane, double>> Plane::nextPlanesPossible(vector<bool> action) const {
     vector<tuple<double, Plane, double>> PlanesWithProba;
     vector<vector<pair<double, PlanePart>>> nextStatesForParts;
+	vector<int> multiplierOfPossibleStates;
 
-    vector<int> multiplierOfPossibleStates;
     for (int i = 0; i < planeParts.size(); i ++) {
         nextStatesForParts.push_back(planeParts[i].nextPlanePartPossible(action[i]));
         multiplierOfPossibleStates.push_back(nextStatesForParts[i].size());
@@ -102,6 +102,51 @@ pair<double, vector<bool>> Plane::findValue(map<Plane,pair<vector<bool>, double>
         }
         return pair<double, vector<bool>>(bestValue, action);
     }
+}
+
+float Plane::heuristique() {
+	float sum = 0;
+	int compteur = 0; 
+	while (this->time <= this->T) {
+		//size == 1
+		for (int i = 0; i < planeParts.size(); i++) {
+			if (!planeParts[i].overBound() && compteur < 2) {
+				planeParts[i].next(0);
+			}				
+			else {
+				compteur = 0;
+				if (!planeParts[i].overBound()) {
+					sum += (int)path[place % path.size()];
+				}
+				else 
+					sum += 1000000;
+				planeParts[i].next(1);
+			}
+			place++;
+		}
+		compteur++;
+		time++;
+	}
+	return sum;
+}
+
+float Plane::heuristique_2() {
+	float sum = 0;
+	while (this->time < this->T) {
+		//size == 1
+		for (int i = 0; i < planeParts.size(); i++) {
+			if (!(planeParts[i].risqueinter() && path[place%path.size()] == Location::PARIS) && !(planeParts[i].risquemoins() && planeParts[i].penteHausse() && path[place%path.size()] == Location::PARIS)) {
+				planeParts[i].next(0);
+			}
+			else{
+				sum += (int)path[place % path.size()];
+				planeParts[i].next(1);
+			}
+			place++;
+		}
+		time++;
+	}
+	return sum;
 }
 
 double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions) {
