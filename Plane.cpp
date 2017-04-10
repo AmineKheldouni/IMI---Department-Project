@@ -98,6 +98,7 @@ pair<double, vector<bool>> Plane::findValue(map<Plane,pair<vector<bool>, double>
             }
 
 
+
             valeurs_actions.insert(pair<Plane,pair<vector<bool>, double>>(*this,pair<vector<bool>,double> (action, bestValue)));
         }
         return pair<double, vector<bool>>(bestValue, action);

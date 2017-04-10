@@ -1,6 +1,3 @@
-#ifndef PROJECT_LOCATION_H
-#define PROJECT_LOCATION_H
-
 #include <vector>
 
 using namespace std;
@@ -14,4 +11,4 @@ enum class Location : int {
 
 Location nextLocation(const vector<Location> &vectorLocation, int position);
 
-#endif //PROJECT_LOCATION_H
+
