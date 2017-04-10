@@ -1,6 +1,3 @@
-#ifndef PROJET_Plane_H
-#define PROJET_Plane_H
-
 #include "Location.h"
 #include "PlanePart.h"
 #include <tuple>
@@ -28,10 +25,10 @@ public:
         return (time < plane.time || (time == plane.time && planeParts < plane.planeParts) ||
                 (time == plane.time && planeParts == plane.planeParts && place < plane.place));
     }
+	float heuristique();
+	float heuristique_2();
 };
 
 double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions);
 
 vector<bool> base10to2(int integer, int size);
-
-#endif //PROJET_Plane_H
