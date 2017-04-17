@@ -26,11 +26,10 @@ int main(){
 	for (int i = 0; i < N; i++) {
 		Plane plane(path, planeParts, 0, 0);
 		int aer = plane.heuristique_2();
-		//cout << aer << endl;
-	
+		//cout << aer << endl;	
 		sum_2 += aer / N;
 	}
-	cout << "le cout d'heuristique 1 = " << sum << endl;
+	//cout << "le cout d'heuristique 1 = " << sum << endl;
 	cout << "le cout d'heuristique 2 = " << sum_2 << endl;
 	Plane plane(path, planeParts, 0, 0);
     map<Plane,pair<vector<bool>,double>> valeurs_actions;
