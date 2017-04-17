@@ -18,14 +18,16 @@ int main(){
 	int N = 1000;
 	int sum = 0;
 	int sum_2 = 0;
-	for (int i = 0; i < N; i++) {
+	/*for (int i = 0; i < N; i++) {
 		Plane plane(path, planeParts, 0, 0);
 		sum += plane.heuristique()/N;
 		
-	}
+	}*/
 	for (int i = 0; i < N; i++) {
 		Plane plane(path, planeParts, 0, 0);
 		int aer = plane.heuristique_2();
+		//cout << aer << endl;
+	
 		sum_2 += aer / N;
 	}
 	cout << "le cout d'heuristique 1 = " << sum << endl;

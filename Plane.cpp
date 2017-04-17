@@ -110,7 +110,7 @@ float Plane::heuristique() {
 	while (this->time <= this->T) {
 		//size == 1
 		for (int i = 0; i < planeParts.size(); i++) {
-			if (!planeParts[i].overBound() && compteur < 2) {
+			if (!planeParts[i].overBound() && compteur < 6) {
 				planeParts[i].next(0);
 			}				
 			else {
@@ -135,7 +135,7 @@ float Plane::heuristique_2() {
 	while (this->time < this->T) {
 		//size == 1
 		for (int i = 0; i < planeParts.size(); i++) {
-			if (!(planeParts[i].risqueinter() && path[place%path.size()] == Location::PARIS) && !(planeParts[i].risquemoins() && planeParts[i].penteHausse() && path[place%path.size()] == Location::PARIS)) {
+			if (!(planeParts[i].risquemoins()  && path[place%path.size()] == Location::PARIS)) {
 				planeParts[i].next(0);
 			}
 			else{

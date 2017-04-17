@@ -14,14 +14,14 @@ bool PlanePart::overBound() const {
 }
 
 bool PlanePart::risque() const {
-	return (frequency >= seuil - 1);
+	return (frequency >= seuil - pente1);
 }
 
 bool PlanePart::risquemoins () const {
-	return (frequency >= seuil - 2);
+	return (frequency >= seuil - 2*pente1);
 }
 bool PlanePart::risqueinter() const {
-	return (frequency >= seuil - 1.1);
+	return (frequency >= seuil - (pente1+pente0));
 }
 
 void PlanePart::reinitialize() {
