@@ -63,6 +63,22 @@ vector<tuple<double, Plane, double>> Plane::nextPlanesPossible(vector<bool> acti
     return PlanesWithProba;
 }
 
+int Plane::next(vector<bool> action) {
+    int totalCost = 0;
+    for (int i = 0; i < action.size(); i ++) {
+        planeParts[i].next(action[i]);
+        if (planeParts[i].overBound()) {
+            totalCost += breakdown;
+        }
+        else {
+            totalCost += (int) path[place % path.size()] * action[i];
+        }
+    }
+    time += 1;
+    place += 1;
+    return totalCost;
+}
+
 
 
 // dans le vecteur actions, on retient à l'indice t le choix à faire à la date t permettant d'atteindre le cout minimum renvoyé par la fonction

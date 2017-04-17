@@ -28,6 +28,8 @@ public:
         return (time < plane.time || (time == plane.time && planeParts < plane.planeParts) ||
                 (time == plane.time && planeParts == plane.planeParts && place < plane.place));
     }
+
+    int next(vector<bool> action);
 };
 
 double meanValue(const vector<tuple<double, Plane, double>> &PlanesWithProba, map<Plane,pair<vector<bool>, double>> &valeurs_actions);
