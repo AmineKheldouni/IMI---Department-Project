@@ -142,8 +142,8 @@ float Plane::heuristique_2() {
 				sum += (int)path[place % path.size()];
 				planeParts[i].next(1);
 			}
-			place++;
 		}
+        place++;
 		time++;
 	}
 	return sum;
