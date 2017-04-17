@@ -25,8 +25,8 @@ public:
     pair<double, vector<bool>> findValue(map<Plane, pair<vector<bool>,double>> &valeurs_actions) const;
 
     bool operator<(const Plane &plane) const {
-        return (time < plane.time || (time == plane.time && planeParts < plane.planeParts) ||
-                (time == plane.time && planeParts == plane.planeParts && place < plane.place));
+        return (T - time < plane.T - plane.time || (T - time == plane.T - plane.time && planeParts < plane.planeParts) ||
+                (T - time == plane.T - plane.time && planeParts == plane.planeParts && place < plane.place));
     }
 
     int next(vector<bool> action);

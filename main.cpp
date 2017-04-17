@@ -46,7 +46,6 @@ int main(){
         vector<double> coutTemps;
 
         for (int i = 0; i <= T; i ++){
-            map<Plane,pair<vector<bool>,double>> valeurs_actions;
             //cerr << i;
             Plane plane(path, planeParts, 0, 0, i);
             cout << plane.findValue(valeurs_actions).first << endl;
