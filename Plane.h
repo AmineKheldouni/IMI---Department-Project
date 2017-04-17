@@ -1,4 +1,4 @@
-#include "Location.h"
+﻿#include "Location.h"
 #include "PlanePart.h"
 #include <tuple>
 #include <iostream>
@@ -8,7 +8,7 @@ using namespace std;
 
 class Plane {
     const int breakdown = 1000000;
-    const int T = 100;
+    const int T = 10;
     vector<Location> path;
     vector<PlanePart> planeParts;
     int time;

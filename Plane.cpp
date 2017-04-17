@@ -1,4 +1,4 @@
-#include "Plane.h"
+﻿#include "Plane.h"
 
 Plane::Plane(vector<Location> path, const vector<PlanePart> &planeParts, int time, int place) : path(path),
                                                                                  planeParts(planeParts), time(time), place(place) {}
@@ -133,17 +133,14 @@ float Plane::heuristique() {
 float Plane::heuristique_2() {
 	float sum = 0;
 	while (this->time < this->T) {
-		//size == 1
-		for (int i = 0; i < planeParts.size(); i++) {
-			if (!(planeParts[i].risquemoins()  && path[place%path.size()] == Location::PARIS)) {
+		for (int i = 0; i < planeParts.size(); i++)
+			if (!(planeParts[i].risquemoins()  && (int)path[(place+1)%path.size()] >= (int)path[place%path.size()])) 
 				planeParts[i].next(0);
-			}
 			else{
 				sum += (int)path[place % path.size()];
 				planeParts[i].next(1);
-			}
-		}
-        place++;
+			}			
+		place++;
 		time++;
 	}
 	return sum;
