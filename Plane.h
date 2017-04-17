@@ -11,13 +11,13 @@ using namespace std;
 
 class Plane {
     const int breakdown = 1000000;
-    const int T = 100;
+    int T;
     vector<Location> path;
     vector<PlanePart> planeParts;
     int time;
     int place;
 public:
-    Plane(vector<Location> path, const vector<PlanePart> &planePart, int time, int place);
+    Plane(vector<Location> path, const vector<PlanePart> &planePart, int time, int place, int T);
 
     // On retourne dans l'ordre la probabilité d'obtenir l'avion, l'avion, et le coût associé
     vector<tuple<double, Plane, double>> nextPlanesPossible(vector<bool> action) const;

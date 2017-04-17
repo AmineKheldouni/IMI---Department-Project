@@ -1,7 +1,7 @@
 #include "Plane.h"
 
-Plane::Plane(vector<Location> path, const vector<PlanePart> &planeParts, int time, int place) : path(path),
-                                                                                 planeParts(planeParts), time(time), place(place) {}
+Plane::Plane(vector<Location> path, const vector<PlanePart> &planeParts, int time, int place, int T) : path(path),
+                                                                                 planeParts(planeParts), time(time), place(place), T(T) {}
 
 
 
@@ -57,7 +57,7 @@ vector<tuple<double, Plane, double>> Plane::nextPlanesPossible(vector<bool> acti
         }
 
         PlanesWithProba.push_back(tuple<double, Plane, double>(planePartWithProba[i].first,
-                                                    Plane(path, planePartWithProba[i].second, time + 1, nextPlace),
+                                                    Plane(path, planePartWithProba[i].second, time + 1, nextPlace, T),
                                                                totalCost));
     }
     return PlanesWithProba;
