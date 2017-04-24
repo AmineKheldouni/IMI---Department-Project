@@ -1,11 +1,14 @@
-#ifndef PROJECT_LOCATION_H
-#define PROJECT_LOCATION_H
+#include <vector>
+
+using namespace std;
 
 enum class Location : int {
-    HUB = 10000,
-    NOHUB = 100000
+    PARIS = 10000,
+    LONDRES = 100000,
+    NEWYORK = 500000,
+    AMSTERDAM = 20000
 };
 
-Location otherLocation(Location location);
+Location nextLocation(const vector<Location> &vectorLocation, int position);
 
-#endif //PROJECT_LOCATION_H
+

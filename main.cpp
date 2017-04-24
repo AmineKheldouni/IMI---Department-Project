@@ -1,13 +1,16 @@
-#include "Avion.h"
+#include "Plane.h"
 #include <iostream>
+#include <ostream>
+
 
 using namespace std;
 
 
 int main(){
-    Avion avion(Location::HUB, Piece(), 0);
-    map<Avion,pair<bool,double>> valeurs_actions;
-    cout << avion.trouveValeur(valeurs_actions).first << endl;
+    double res = meanCost(10,3,2);
+    //double res2 = meanCost2(10,3,2);
 
-    return 0;
+    cout << "la valeur moyenne = " << res << endl;
+    //cout << "la valeur moyenne = " << res2 << endl;
+    
 }
