@@ -1,13 +1,13 @@
 #include "Plane.h"
 #include <iostream>
 #include <ostream>
-#include <conio.h>
+
 
 using namespace std;
 
 
 int main(){
-    vector<PlanePart> planeParts;
+    /*vector<PlanePart> planeParts;
     //for (int i = 0; i < 2; i ++) {
         planeParts.push_back(PlanePart());
     //}
@@ -15,13 +15,13 @@ int main(){
     vector<Location> path = {Location::PARIS, Location::LONDRES};
 	//Location TRY = { Location::PARIS };
 	//int tre = (int)TRY + 1;
-	int N = 1000;
+    int N = 100000;
 	int sum = 0;
 	int sum_2 = 0;
 	for (int i = 0; i < N; i++) {
 		Plane plane(path, planeParts, 0, 0);
-		sum += plane.heuristique()/N;
-		
+        sum += plane.heuristique()/N;
+
 	}
 	for (int i = 0; i < N; i++) {
 		Plane plane(path, planeParts, 0, 0);
@@ -33,6 +33,14 @@ int main(){
 	Plane plane(path, planeParts, 0, 0);
     map<Plane,pair<vector<bool>,double>> valeurs_actions;
     cout << "la valeur optimale = " <<plane.findValue(valeurs_actions).first << endl;
-	_getch();
+    _getch();*/
+
+
+    //double res = meanCost(2,3,2);
+    double res2 = meanCost2(10,3,2);
+
+
+    //cout << "la valeur moyenne = " << res << endl;
+    cout << "la valeur moyenne = " << res2 << endl;
     
 }

@@ -13,15 +13,15 @@ class PlanePart
     const double pente0 = 0.1;
     const double pente1 = 1;
     const double seuil = 3;
-    
     bool whichPente;
     double frequency;
 
 public :
     PlanePart();
+    int temps;
 
     PlanePart(double frequency, bool whichPente);
-
+    PlanePart(double frequency, bool whichPente, int temps);
     void reinitialize();
 
     bool overBound() const;

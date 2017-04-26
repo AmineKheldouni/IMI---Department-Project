@@ -60,6 +60,7 @@ vector<tuple<double, Plane, double>> Plane::nextPlanesPossible(vector<bool> acti
                                                     Plane(path, planePartWithProba[i].second, time + 1, nextPlace),
                                                                totalCost));
     }
+
     return PlanesWithProba;
 }
 
@@ -133,7 +134,7 @@ float Plane::heuristique() {
 
 float Plane::heuristique_2() {
 	float sum = 0;
-	while (this->time < this->T) {
+    while (this->time <= this->T) {
 		//size == 1
 		for (int i = 0; i < planeParts.size(); i++) {
 			if (!(planeParts[i].risqueinter() && path[place%path.size()] == Location::PARIS) && !(planeParts[i].risquemoins() && planeParts[i].penteHausse() && path[place%path.size()] == Location::PARIS)) {
@@ -172,4 +173,106 @@ vector<bool> base10to2(int integer, int size) {
         vector01.push_back(false);
     }
     return vector01;
+}
+
+double meanCost(int T, int nb_part, int change){
+    vector<Location> path = {Location::PARIS, Location::LONDRES};
+    vector<PlanePart> planeParts;
+    vector<bool> action0;
+    vector<bool> action1;
+    for(int k=0;k<nb_part;k++){
+        planeParts.push_back(PlanePart());
+        action0.push_back(true);//on change
+        action1.push_back(false);//on change pas
+    }
+    vector<tuple<double, Plane, double>> planePossible;
+    planePossible.push_back(tuple<double, Plane, double>(1,Plane(path, planeParts, 0, 0),0));
+
+    for(int i=0;i<T;i++){
+        vector<tuple<double, Plane, double>> nextPlanePossible;
+        if(i % change == 0){
+            for(int k=0; k < planePossible.size() ; k++){
+                tuple<double, Plane, double> state = planePossible.back();
+                planePossible.pop_back();
+                vector<tuple<double, Plane, double>> nextStates = get<1>(state).nextPlanesPossible(action0);
+                for(int j =0; j< nextStates.size();j++){
+                    get<0>(nextStates[j]) = get<0>(nextStates[j]) * get<0>(state);
+                    get<2>(nextStates[j]) = get<2>(nextStates[j]) + get<2>(state);
+                    nextPlanePossible.push_back(nextStates[j]);
+                }
+            }
+        }
+        else{
+            for(int k=0; k < planePossible.size() ; k++){
+                tuple<double, Plane, double> state = planePossible.back();
+                planePossible.pop_back();
+
+                vector<tuple<double, Plane, double>> nextStates = get<1>(state).nextPlanesPossible(action1);
+                for(int j =0; j< nextStates.size();j++){
+                    get<0>(nextStates[j]) = get<0>(nextStates[j]) * get<0>(state);
+                    get<2>(nextStates[j]) = get<2>(nextStates[j])+ get<2>(state);
+                    nextPlanePossible.push_back(nextStates[j]);
+                    cout<<
+                }
+            }
+
+        }
+        for(int j =0; j< nextPlanePossible.size();j++){
+            planePossible.push_back(nextPlanePossible[j]);
+        }
+    }
+    double res;
+    for(int i=0;i<planePossible.size();i++){
+        res += get<0>(planePossible[i])* get<2>(planePossible[i]);
+    }
+    return res;
+}
+
+double meanCost2(int T, int nb_part, int change){
+    vector<Location> path = {Location::PARIS, Location::LONDRES};
+    vector<PlanePart> planeParts;
+    for(int k=0;k<nb_part;k++){
+        planeParts.push_back(PlanePart());
+    }
+    vector<tuple<double, Plane, double>> planePossible;
+    planePossible.push_back(tuple<double, Plane, double>(1,Plane(path, planeParts, 0, 0),0));
+
+    for(int i=0;i<T;i++){
+        vector<tuple<double, Plane, double>> nextPlanePossible;
+        for(int k=0; k < planePossible.size() ; k++){
+            tuple<double, Plane, double> state = planePossible.back();
+            planePossible.pop_back();
+            vector<bool> action;
+            for(int i=0;i < get<1>(state).planeParts.size();i++){
+
+                if(get<1>(state).planeParts[i].temps >= change){
+                    action.push_back(true);
+
+                }
+                else{
+                    action.push_back(false);
+
+                }
+
+                }
+            vector<tuple<double, Plane, double>> nextStates = get<1>(state).nextPlanesPossible(action);
+            for(int j =0; j< nextStates.size();j++){
+                get<0>(nextStates[j]) = get<0>(nextStates[j]) * get<0>(state);
+                get<2>(nextStates[j]) = get<2>(nextStates[j]) + get<2>(state);
+                nextPlanePossible.push_back(nextStates[j]);
+                }
+            }
+
+
+        for(int j =0; j< nextPlanePossible.size();j++){
+            planePossible.push_back(nextPlanePossible[j]);
+        }
+    }
+    double res;
+    double somme=0;
+    for(int i=0;i<planePossible.size();i++){
+        res += get<0>(planePossible[i])* get<2>(planePossible[i]);
+        somme += get<0>(planePossible[i]);
+    }
+    return somme;
 }

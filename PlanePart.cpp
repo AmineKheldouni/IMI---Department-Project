@@ -5,9 +5,12 @@ using namespace std;
 PlanePart::PlanePart() {
     frequency = 0;
     whichPente = false;
+    temps = 0;
 }
 
-PlanePart::PlanePart(double frequency, bool whichPente) : frequency(frequency), whichPente(whichPente) {}
+PlanePart::PlanePart(double frequency, bool whichPente) : frequency(frequency), whichPente(whichPente),temps(0) {}
+PlanePart::PlanePart(double frequency, bool whichPente, int temps) : frequency(frequency), whichPente(whichPente), temps(temps) {}
+
 
 bool PlanePart::overBound() const {
     return (frequency > seuil);
@@ -85,14 +88,14 @@ vector<pair<double,PlanePart>> PlanePart::nextPlanePartPossible(bool action) con
     if (!action) {
         // Cas où l'on est sur la pente haute
         if (whichPente) {
-            PlanePartWithProba.push_back(pair<double,PlanePart>(1, PlanePart(frequency + pente1, whichPente)));
+            PlanePartWithProba.push_back(pair<double,PlanePart>(1, PlanePart(frequency + pente1, whichPente,temps+1)));
         }
         // Cas où l'on est sur la pente basse
         else {
             // On reste sur la pente basse...
-            PlanePartWithProba.push_back(pair<double,PlanePart>(probaP1, PlanePart(frequency + pente0, false)));
+            PlanePartWithProba.push_back(pair<double,PlanePart>(probaP1, PlanePart(frequency + pente0, false,temps+1)));
             // ... ou on bascule sur la pente haute
-            PlanePartWithProba.push_back(pair<double,PlanePart>(1 - probaP1, PlanePart(frequency + pente1, true)));
+            PlanePartWithProba.push_back(pair<double,PlanePart>(1 - probaP1, PlanePart(frequency + pente1, true, temps+1)));
         }
     }
 
