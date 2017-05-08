@@ -1,4 +1,6 @@
 #include "Plane.h"
+#include "gurobi_c++.h"
+using namespace std;
 
 Plane::Plane(vector<Location> path, const vector<PlanePart> &planeParts, int time, int place, int T) : path(path),
                                                                                  planeParts(planeParts), time(time), place(place), T(T) {}
@@ -97,6 +99,10 @@ pair<double, vector<bool>> Plane::findValue(map<Plane,pair<vector<bool>, double>
              action = ((*it).second).first;
         }
         else {
+
+            GRBEnv env = GRBEnv();
+
+            GRBModel model = GRBModel(env);
 
             action = base10to2(0, planeParts.size());
             vector<tuple<double, Plane, double>> PlanesWithProba = nextPlanesPossible(action);
